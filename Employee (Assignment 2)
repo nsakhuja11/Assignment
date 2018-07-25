@@ -1,0 +1,103 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication1
+{
+    //Using Delegate
+    public delegate void del(string message);
+
+    class Exception_Qualification_Is_Empty:Exception
+    {
+        public Exception_Qualification_Is_Empty(string message):base(message){
+        }
+    }
+
+    class Employee
+    {
+        public int id;
+        public string name;
+        public string qualification;
+        public string department;
+    }
+
+    class Program
+    {
+        static void printSuccessMessage(string message)
+        {
+            Console.WriteLine(message);
+        }
+        static int k = 0;
+        static void AddEmp(Employee emp)
+        {
+            Console.WriteLine("Enter Employee Id");
+            emp.id = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter Employee Name");
+            emp.name = Console.ReadLine();
+
+            del obj1 = new del(printSuccessMessage);
+            //using Try/Catch.
+            try
+            {
+                Console.WriteLine("Enter Employee Qualification");
+                emp.qualification = Console.ReadLine();
+                if (String.IsNullOrEmpty(emp.qualification))
+                {
+                    //Using Exception Handling.
+                    throw new Exception_Qualification_Is_Empty("Exception : Enter Valid Qualification");
+                }
+                else if (emp.qualification == "BE" || emp.qualification == "BCA" || emp.qualification == "BSC")
+                {
+                    emp.department = "IT";
+                    Console.WriteLine("Employee Name {0}", emp.name);
+                    obj1("Employee is under IT Department");
+                }
+                else if (emp.qualification == "BCOM" || emp.qualification == "MCOM" || emp.qualification == "CA")
+                {
+                    emp.department = "Accounts";
+                    Console.WriteLine("Employee Name {0}", emp.name);
+                    obj1("Employee is under Accounts Department");
+                }
+                else
+                {
+                    throw new Exception_Qualification_Is_Empty("Exception : Enter Valid Qualification");
+                }
+            }
+
+            catch (Exception_Qualification_Is_Empty obj)
+            {
+                Console.WriteLine(obj.Message);
+                string filePath = @"C:\Users\NIHIT\Documents\logs.txt";
+                if (!File.Exists(filePath))
+                {
+                    //Adding message and stack trace to file system
+                    using (StreamWriter streamWriter = File.AppendText(filePath))
+                    {
+                        streamWriter.WriteLine(obj.Message);
+                        streamWriter.WriteLine();
+                        streamWriter.WriteLine(obj.StackTrace);
+                    }
+                }
+            }
+
+        }
+        static void Main(string[] args)
+        {
+            Employee[] emp = new Employee[30] ;
+            Console.WriteLine("Enter 1 to add employee");
+            int choice = Convert.ToInt32(Console.ReadLine());
+            while(choice==1)
+            {
+                emp[k] = new Employee();
+                AddEmp(emp[k]);
+                k++;
+                Console.WriteLine("Enter 1 to add another employee or 0 to exit");
+                choice = Convert.ToInt32(Console.ReadLine());
+            }
+            
+        }
+    }
+}
