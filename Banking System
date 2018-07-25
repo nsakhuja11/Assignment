@@ -1,0 +1,137 @@
+using System;
+
+public struct Account{
+    public string type;
+    public string name;
+    public int accountId;
+    public int balance;
+};
+
+class bankingSystem {
+    
+    static int searchByAccountId(Account [] acc,int no){
+        int index=0;
+        for(int i=0;i<10;i++){
+            if(acc[i].accountId==no){
+                index=i;
+            }
+        }
+        return index;
+    }
+    
+    static void displayAccountDetails(Account [] cus,int index){
+        Console.WriteLine("Account Holder Name = {0}",cus[index].name);
+        Console.WriteLine("Account No. = {0}",cus[index].accountId);
+        Console.WriteLine("Account Type = {0}",cus[index].type);
+        Console.WriteLine("Balance = {0}",cus[index].balance);
+    }
+    
+    static int deposit(int bal){
+        int amount=0;
+        Console.WriteLine("Enter Amount to Deposit");
+        amount=Convert.ToInt32(Console.ReadLine());
+        bal=bal+amount;
+        Console.WriteLine("Balance = {0}",bal);
+        return bal;
+    }
+    
+    static int withdraw(int bal,string type){
+        int amount=0;
+        Console.WriteLine("Enter Amount to Withdraw");
+        amount=Convert.ToInt32(Console.ReadLine());
+        if(type=="Saving"){
+            if((bal-amount)<1000){
+                Console.WriteLine("You can not Withdraw");
+            }
+            else{
+                bal=bal-amount;
+            }
+        }
+        else if(type=="Current"){
+            if((bal-amount)<0){
+                Console.WriteLine("You can not Withdraw");
+            }
+            else{
+                bal=bal-amount;
+            }
+        }
+        else if(type=="DMAT"){
+            if((bal-amount)<-10000){
+                Console.WriteLine("You can not Withdraw");
+            }
+            else{
+                bal=bal-amount;
+            }
+        }
+        Console.WriteLine("Balance = {0}",bal);
+        return bal;
+    }
+    
+    static void calculateInterest(int bal,string type){
+        //int interest=0;
+        if(type=="Saving"){
+            bal=(bal/100)*4;
+        }
+        else if(type=="Current"){
+            bal=bal/100;
+        }
+        else if(type=="DMAT"){
+            bal=0;
+        }
+        Console.WriteLine("Interest = {0}",bal);
+    }
+    
+    static void Main() 
+    {
+        Account [] Customer = new Account[10];
+        Console.WriteLine("Enter 10 Customer's Bank Info.");
+        for(int i=0;i<10;i++){
+            Console.WriteLine("Enter Account Type");
+            Customer[i].type=Console.ReadLine();
+            Console.WriteLine("Enter Customer Name");
+            Customer[i].name=Console.ReadLine();
+            Console.WriteLine("Enter Account Number");
+            Customer[i].accountId=Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter Account Balance");
+            Customer[i].balance=Convert.ToInt32(Console.ReadLine());
+        }
+        int c=1;
+        while(c==1)
+        {
+            
+            Console.WriteLine("Enter Account Number To Get Information");
+            int no;
+            no=Convert.ToInt32(Console.ReadLine());
+            int index=searchByAccountId(Customer,no);
+            
+            int choice;
+            Console.WriteLine("Enter your choice");
+            Console.WriteLine("1 to Display Account Details");
+            Console.WriteLine("2 to Deposit Money");
+            Console.WriteLine("3 to Withdraw");
+            Console.WriteLine("4 to Calculate Intrest");
+            choice=Convert.ToInt32(Console.ReadLine());
+            switch(choice){
+                
+                case 1: displayAccountDetails(Customer,index);
+                break;
+                
+                case 2: Customer[index].balance=deposit(Customer[index].balance);
+                break;
+                
+                case 3: Customer[index].balance=withdraw(Customer[index].balance,Customer[index].type);
+                break;
+                
+                case 4: calculateInterest(Customer[index].balance,Customer[index].type);
+                break;
+            }
+            Console.WriteLine("If you want to continue type 1 else type 0");
+            c=Convert.ToInt32(Console.ReadLine());
+        }
+        /*for(int i=0;i<n;i++){
+            Console.WriteLine(Customer[i].type);
+            Console.WriteLine(Customer[i].accountId);
+            Console.WriteLine(Customer[i].balance);
+        }*/
+    }
+}
