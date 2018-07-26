@@ -1,0 +1,25 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Swap
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Enter 1st Number");
+            int first = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter 2nd Number");
+            int second = Convert.ToInt32(Console.ReadLine());
+            int temp = first;
+            first = second;
+            second = temp;
+            Console.WriteLine("1st Number is : {0}", first);
+            Console.WriteLine("2nd Number is : {0}", second);
+            Console.ReadKey();
+        }
+    }
+}
